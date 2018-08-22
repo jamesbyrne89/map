@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import MapComponent from './components/Map';
 import DetailsPanel from './components/DetailsPanel';
 import axios from 'axios';
@@ -56,7 +55,6 @@ class App extends Component {
     axios
       .get(JP_ENDPOINT)
       .then(res => {
-        console.log(res.data.data[0]);
         this.setState({ results: res.data.data });
         this.cacheResults(res.data.data);
       })
@@ -68,7 +66,6 @@ class App extends Component {
   };
 
   openDetails = props => {
-    console.log(props);
     this.setState({ detailsPanelOpen: true, details: props });
   };
 
