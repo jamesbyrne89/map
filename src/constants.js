@@ -4,7 +4,11 @@ export const JP_ENDPOINT =
 export const styles = (() => {
   return {
     jp_green: '#0a0',
+    jp_light_green: '#00c400',
     jp_pale_blue: '#e4f1ff',
-    jp_navy: '#20303f'
+    jp_mid_blue: '#4a90e2',
+    jp_navy: '#20303f',
+    jp_gold: '#f7b509;',
+    box_shadow: '0 0 2px 1px rgba(0,0,0,.2)'
   };
 })();

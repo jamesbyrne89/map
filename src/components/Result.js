@@ -1,64 +1,103 @@
 import React from 'react';
 import styled from 'styled-components';
 import { styles } from '../constants';
+import { calculateWalkTime, getSpaceType } from '../helpers';
 
 const StyledResult = styled.article`
   border-top: 1px solid #efefef;
   padding: 0.675em;
   display: flex;
+  cursor: pointer;
   &:hover,
   &:active {
     background: ${styles.jp_pale_blue};
   }
 `;
 
-const StyledType = styled.span`
-  color: ${styles.jp_green};
-  font-weight: 700;
+export const StyledDetails = styled.div`
+  padding: 0.675em 1em;
 `;
 
-const StyledDetails = styled.div`
-  padding: 0.675em;
-`;
-
-const StyledResultRow = styled.div`
+export const StyledResultRow = styled.div`
   margin-top: 1rem;
-  display: flex;
+  display: ${props => (props.display ? props.display : 'flex')};
   justify-content: ${props => props.spacing};
+  border-top: ${props => (props.topBorder ? '1px solid #efefef' : 'none')};
 `;
 
 const StyledPrice = styled.div`
   color: #fff;
   background: ${styles.jp_navy};
   padding: 0.25em 0.5em;
+  font-size: 0.875rem;
+  span {
+    line-height: 1;
+  }
+  span:first-child {
+    font-weight: 400;
+  }
+  span:last-child {
+    font-size: 0.75em;
+  }
 `;
 
-function calculateWalkTime(distance) {
-  // 3.1mph is average walking speed
-  const milesPerMinute = 3.1 / 60;
-  return parseInt(distance / milesPerMinute, 0);
-}
+const StyledStatus = styled.span`
+  display: inline-block;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: ${styles.jp_gold};
+  font-size: 0.75rem;
+  line-height: 1;
+  img {
+    height: 1.5em;
+    margin-right: 0.5em;
+    margin-bottom: -0.275em;
+  }
+`;
+
+export const StyledWalkDistance = styled.span`
+  img {
+    margin-right: 0.5em;
+    margin-bottom: -0.2em;
+  }
+`;
+
+const StyledThumbnail = styled.img.attrs({
+  src: props => (props.photo ? props.photo : 'images/placeholder_img.svg'),
+  alt: props => props.title
+})`
+  max-width: 120px;
+  height: auto;
+  margin: 0 auto auto;
+`;
 
 const Result = props => {
   return (
     <StyledResult>
-      <img
-        src={props.photo ? props.photo : 'images/placeholder_img.svg'}
-        alt={props.title}
-      />
+      <StyledThumbnail src={props.photo} title={props.title} />
       <StyledDetails>
         <StyledResultRow>
-          <StyledType>{`${props.title.split(' ')[0]} `}</StyledType>
-          {props.title.substr(props.title.indexOf(' ') + 1)}
+          <StyledType>{`${getSpaceType(props.title)}  `}</StyledType>
+          {` ${props.title.slice(props.title.indexOf(' '))}`}
         </StyledResultRow>
-        <StyledResultRow>RESERVABLE</StyledResultRow>
-        <StyledResultRow spacing="space-between">
-          {`${calculateWalkTime(props.distance)} ${
-            calculateWalkTime(props.distance) > 1 ? ' mins' : ' min'
-          }`}
+        <StyledResultRow>
+          <StyledStatus>
+            <img alt="reservable" src="images/thunder.svg" />
+            Reservable
+          </StyledStatus>
+        </StyledResultRow>
+        <StyledResultRow display={'block'} spacing="space-between">
+          <StyledWalkDistance>
+            <img alt="walking distance" src="images/walking_icon.svg" />
+            <span>{calculateWalkTime(props.distance)}</span>
+          </StyledWalkDistance>
           <StyledPrice>
+            <span>{props.price.slice(0, props.price.indexOf('.') + 1)}</span>
             <span>
-              {(-1, props.price.substr(props.price.indexOf('.') + 1))}
+              {props.price.slice(
+                props.price.indexOf('.') + 1,
+                props.price.length
+              )}
             </span>
           </StyledPrice>
         </StyledResultRow>

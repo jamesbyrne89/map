@@ -11,20 +11,33 @@ const StyledMap = styled.div`
   width: 100%;
 `;
 
-
-
-const MyMapComponent = withScriptjs(
+const MapComponent = withScriptjs(
   withGoogleMap(props => (
     <StyledMap>
-      <GoogleMap defaultZoom={15} defaultCenter={{ lat: props.coords.lat, lng: props.coords.lng }}>
-        {props.isMarkerShown && (
-          props.markers.map((marker) => (
-          <Marker key={marker.id} position={{ lat: marker.coordinates.lat, lng: marker.coordinates.lng }} />
-          ))
-        )}
+      <GoogleMap
+        defaultZoom={15}
+        defaultCenter={{ lat: props.coords.lat, lng: props.coords.lng }}
+        {...props}
+      >
+        {props.isMarkerShown &&
+          props.markers.map(marker => (
+            <Marker
+              key={marker.id}
+              photo={marker.photos[0]}
+              title={marker.title}
+              distance={marker.distance}
+              price={marker.price.formatted}
+              streetview={marker.streetview}
+              position={{
+                lat: marker.coordinates.lat,
+                lng: marker.coordinates.lng
+              }}
+              onClick={() => props.openDetails(marker)}
+            />
+          ))}
       </GoogleMap>
     </StyledMap>
   ))
 );
 
-export default MyMapComponent;
+export default MapComponent;
