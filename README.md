@@ -1,4 +1,4 @@
-App hosted at https://jamesbyrne89/github.io/map
+App hosted at https://jamesbyrne89.github.io/map/
 
 ## TODOs
 
